@@ -48,15 +48,13 @@ class MathField(models.TextField):
             try:
                 return dict(json.loads(value))
             except (ValueError, TypeError):
-                # the value was stored as just a string. Try to compile it to
-                # LaTeX and return a dictionary, or raise a NodeError
-                return store_math(value)
-        
+                return {'raw': value, 'html': ''}
+
         if isinstance(value, dict):
             return value
-        
+
         return {'raw': '', 'html': ''}
-        
+
     def get_prep_value(self, value):
         if not value:
             return json.dumps({'raw': '', 'html': ''})
@@ -65,15 +63,11 @@ class MathField(models.TextField):
             try:
                 dictval = json.loads(value)
             except (ValueError, TypeError):
-                # This means the user tried to pass just a string of text in.
-                # The HTML will be generated manually, but this will only work
-                # if node.js is installed on the server. Otherwise, a NodeError
-                # will be raised.
-                return json.dumps(store_math(value))
+                return json.dumps({'raw': value, 'html': ''})
             else:
                 if {'raw', 'html'} == set(dictval.keys()):
                     return value
-                else:                
+                else:
                     raise MathFieldValidationError(self, value)
 
         if isinstance(value, dict):
@@ -86,8 +80,8 @@ class MathField(models.TextField):
 
     def formfield(self, **kwargs):
         defaults = {
-            'help_text': ('Type text as you would normally, or write LaTeX ' 
-                'by surrounding it with $ characters.')
+            'help_text': ('Type text as you would normally, or write LaTeX '
+                          'by surrounding it with $ characters.')
         }
         defaults.update(kwargs)
         field = super(MathField, self).formfield(**defaults)

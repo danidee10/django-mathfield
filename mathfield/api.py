@@ -6,6 +6,11 @@ import os
 import re
 import cgi
 
+try:
+    WindowsError
+except NameError:
+    WindowsError = OSError
+
 if six.PY3:
     from django.utils.encoding import smart_text as smart_unicode
     import html as cgi

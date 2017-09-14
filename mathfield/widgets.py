@@ -12,9 +12,8 @@ if six.PY3:
     basestring = str
 
 class MathFieldWidget(forms.Textarea):
-    
+
     def render(self, name, value, attrs=None):
-        
         try:
             value = json.loads(value)
             raw_value = value['raw']
@@ -30,12 +29,16 @@ class MathFieldWidget(forms.Textarea):
                 raw = value['raw'] if 'raw' in value else ''
                 html = value['html'] if 'html' in value else ''
                 html = html.replace("'", "\'")
+
             elif isinstance(value, basestring):
                 raw = value
                 html = ''
-            raw = cgi.escape(raw.replace('\\', '\\\\'))
+            else:
+                raw = html = ''
         else:
             raw = html = ''
+
+        raw = cgi.escape(raw.replace('\\', '\\\\'))
 
         # Escape new lines
         raw = raw.replace('\n', '\\n')
