@@ -1,6 +1,8 @@
 django-mathfield
 ================
 
+**NOTE: This is an independent fork of https://github.com/jongoodnow/django-mathfield and it works with Python3 and Django > 1.7**
+
 MathField is a model field for Django that allows you to input LaTeX and store 
 the compiled HTML on your database. It comes with a form for the Django Admin 
 that provides live previews of your rendered LaTeX.
@@ -11,8 +13,6 @@ Installation and Setup
 Your server needs to have 
 `Python 2.7 <https://www.python.org/downloads/release/python-278/>`_ and 
 `Django 1.7 <https://www.djangoproject.com/download/>`_.
-
-**EDIT: This fork works with Python3 and Django > 1.8**
 
 Get it installed with::
 
