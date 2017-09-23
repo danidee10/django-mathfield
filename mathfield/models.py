@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
+import json
 import six
+
+import django
 from django.db import models
 from django.core import exceptions
 from mathfield.api import store_math
-import json
 
 if six.PY3:
     basestring = str
@@ -20,7 +22,7 @@ class MathField(models.TextField):
 
     description = 'Field that allows you to write LaTeX and display it as HTML.'
 
-    if six.PY2:
+    if six.PY2 and django.VERSION <= (1, 7):
         __metaclass__ = models.SubfieldBase
 
     def from_db_value(self, value, expression, connection, context):
